@@ -8,6 +8,7 @@ const ohif = {
   sopClassHandler: '@ohif/extension-default.sopClassHandlerModule.stack',
   hangingProtocol: '@ohif/extension-default.hangingProtocolModule.default',
   leftPanel: '@ohif/extension-default.panelModule.seriesList',
+  // rightPanel: '@ohif/extension-default.panelModule.measurements',
   rightPanel: '@ohif/extension-cornerstone.panelModule.panelMeasurement',
 };
 
@@ -31,12 +32,12 @@ function modeFactory({ modeConfiguration }) {
      * is used to identify the mode in the viewer's state.
      */
     id,
-    routeName: 'template',
+    routeName: 'seutest',
     /**
      * Mode name, which is displayed in the viewer's UI in the workList, for the
      * user to select the mode.
      */
-    displayName: 'Template Mode',
+    displayName: 'Seu Test Mode',
     /**
      * Runs when the Mode Route is mounted to the DOM. Usually used to initialize
      * Services and other resources.
@@ -112,14 +113,15 @@ function modeFactory({ modeConfiguration }) {
             id: ohif.layout,
             props: {
               leftPanels: [ohif.leftPanel,
-                'seu-test-extension.panelModule.math',
+                // 'seu-test-extension.panelModule.math',
               ],
               rightPanels: [ohif.rightPanel,
-                'seu-test-extension.panelModule.right-panel-selector',
+                // 'seu-test-extension.panelModule.right-panel-selector',
                 'seu-test-extension.panelModule.right-panel-selector-AspectForm',
                 'seu-test-extension.panelModule.right-panel-selector-AnalysisList',
                 'seu-test-extension.panelModule.right-panel-selector-LesionReportSheet',
-                'seu-test-extension.panelModule.test-websocket-rabbitmq',],
+                // 'seu-test-extension.panelModule.test-websocket-rabbitmq',
+              ],
               viewports: [
                 {
                   namespace: cornerstone.viewport,

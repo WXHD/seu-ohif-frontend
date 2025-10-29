@@ -1,23 +1,23 @@
 // https://developers.google.com/web/tools/workbox/guides/codelabs/webpack
 // ~~ WebPack
-const path = require("path");
-const { merge } = require("webpack-merge");
-const webpack = require("webpack");
-const webpackBase = require("./../../../.webpack/webpack.base.js");
+const path = require('path');
+const { merge } = require('webpack-merge');
+const webpack = require('webpack');
+const webpackBase = require('./../../../.webpack/webpack.base.js');
 // ~~ Plugins
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { InjectManifest } = require("workbox-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // ~~ Directories
-const SRC_DIR = path.join(__dirname, "../src");
-const DIST_DIR = path.join(__dirname, "../dist");
-const PUBLIC_DIR = path.join(__dirname, "../public");
+const SRC_DIR = path.join(__dirname, '../src');
+const DIST_DIR = path.join(__dirname, '../dist');
+const PUBLIC_DIR = path.join(__dirname, '../public');
 // ~~ Env Vars
-const HTML_TEMPLATE = process.env.HTML_TEMPLATE || "index.html";
-const PUBLIC_URL = process.env.PUBLIC_URL || "/";
-const APP_CONFIG = process.env.APP_CONFIG || "config/default.js";
+const HTML_TEMPLATE = process.env.HTML_TEMPLATE || 'index.html';
+const PUBLIC_URL = process.env.PUBLIC_URL || '/';
+const APP_CONFIG = process.env.APP_CONFIG || 'config/default.js';
 
 // proxy settings
 const PROXY_TARGET = process.env.PROXY_TARGET;
@@ -27,32 +27,32 @@ const PROXY_PATH_REWRITE_TO = process.env.PROXY_PATH_REWRITE_TO;
 
 const OHIF_PORT = Number(process.env.OHIF_PORT || 3000);
 const ENTRY_TARGET = process.env.ENTRY_TARGET || `${SRC_DIR}/index.js`;
-const Dotenv = require("dotenv-webpack");
-const writePluginImportFile = require("./writePluginImportsFile.js");
+const Dotenv = require('dotenv-webpack');
+const writePluginImportFile = require('./writePluginImportsFile.js');
 // const MillionLint = require('@million/lint');
 
 const copyPluginFromExtensions = writePluginImportFile(SRC_DIR, DIST_DIR);
 
 const setHeaders = (res, path) => {
-  if (path.indexOf(".gz") !== -1) {
-    res.setHeader("Content-Encoding", "gzip");
-  } else if (path.indexOf(".br") !== -1) {
-    res.setHeader("Content-Encoding", "br");
+  if (path.indexOf('.gz') !== -1) {
+    res.setHeader('Content-Encoding', 'gzip');
+  } else if (path.indexOf('.br') !== -1) {
+    res.setHeader('Content-Encoding', 'br');
   }
-  if (path.indexOf(".pdf") !== -1) {
-    res.setHeader("Content-Type", "application/pdf");
-  } else if (path.indexOf("mp4") !== -1) {
-    res.setHeader("Content-Type", "video/mp4");
-  } else if (path.indexOf("frames") !== -1) {
-    res.setHeader("Content-Type", "multipart/related");
+  if (path.indexOf('.pdf') !== -1) {
+    res.setHeader('Content-Type', 'application/pdf');
+  } else if (path.indexOf('mp4') !== -1) {
+    res.setHeader('Content-Type', 'video/mp4');
+  } else if (path.indexOf('frames') !== -1) {
+    res.setHeader('Content-Type', 'multipart/related');
   } else {
-    res.setHeader("Content-Type", "application/json");
+    res.setHeader('Content-Type', 'application/json');
   }
 };
 
 module.exports = (env, argv) => {
   const baseConfig = webpackBase(env, argv, { SRC_DIR, DIST_DIR });
-  const isProdBuild = process.env.NODE_ENV === "production";
+  const isProdBuild = process.env.NODE_ENV === 'production';
   const hasProxy = PROXY_TARGET && PROXY_DOMAIN;
 
   const mergedConfig = merge(baseConfig, {
@@ -61,26 +61,26 @@ module.exports = (env, argv) => {
     },
     output: {
       path: DIST_DIR,
-      filename: isProdBuild ? "[name].bundle.[chunkhash].js" : "[name].js",
+      filename: isProdBuild ? '[name].bundle.[chunkhash].js' : '[name].js',
       publicPath: PUBLIC_URL, // Used by HtmlWebPackPlugin for asset prefix
       devtoolModuleFilenameTemplate: function (info) {
         if (isProdBuild) {
           return `webpack:///${info.resourcePath}`;
         } else {
-          return "file:///" + encodeURI(info.absoluteResourcePath);
+          return 'file:///' + encodeURI(info.absoluteResourcePath);
         }
       },
     },
     resolve: {
       modules: [
         // Modules specific to this package
-        path.resolve(__dirname, "../node_modules"),
+        path.resolve(__dirname, '../node_modules'),
         // Hoisted Yarn Workspace Modules
-        path.resolve(__dirname, "../../../node_modules"),
+        path.resolve(__dirname, '../../../node_modules'),
         SRC_DIR,
-        path.resolve(__dirname, "modes/seu-ohif-mode/node_modules"),
-        path.resolve(__dirname, "extensions/seu-ohif-extension/node_modules"),
-        path.resolve(__dirname, "extensions/seu-service/node_modules"),
+        path.resolve(__dirname, 'modes/seu-ohif-mode/node_modules'),
+        path.resolve(__dirname, 'extensions/seu-ohif-extension/node_modules'),
+        path.resolve(__dirname, 'extensions/seu-service/node_modules'),
       ],
     },
     plugins: [
@@ -96,11 +96,11 @@ module.exports = (env, argv) => {
           {
             from: PUBLIC_DIR,
             to: DIST_DIR,
-            toType: "dir",
+            toType: 'dir',
             globOptions: {
               // Ignore our HtmlWebpackPlugin template file
               // Ignore our configuration files
-              ignore: ["**/config/**", "**/html-templates/**", ".DS_Store"],
+              ignore: ['**/config/**', '**/html-templates/**', '.DS_Store'],
             },
           },
           // Short term solution to make sure GCloud config is available in output
@@ -116,10 +116,10 @@ module.exports = (env, argv) => {
           },
           // Copy Dicom Microscopy Viewer build files
           {
-            from: "../../../node_modules/dicom-microscopy-viewer/dist/dynamic-import",
+            from: '../../../node_modules/dicom-microscopy-viewer/dist/dynamic-import',
             to: DIST_DIR,
             globOptions: {
-              ignore: ["**/*.min.js.map"],
+              ignore: ['**/*.min.js.map'],
             },
           },
         ],
@@ -127,15 +127,15 @@ module.exports = (env, argv) => {
       // Generate "index.html" w/ correct includes/imports
       new HtmlWebpackPlugin({
         template: `${PUBLIC_DIR}/html-templates/${HTML_TEMPLATE}`,
-        filename: "index.html",
+        filename: 'index.html',
         templateParameters: {
           PUBLIC_URL: PUBLIC_URL,
         },
       }),
       // Generate a service worker for fast local loads
       new InjectManifest({
-        swDest: "sw.js",
-        swSrc: path.join(SRC_DIR, "service-worker.js"),
+        swDest: 'sw.js',
+        swSrc: path.join(SRC_DIR, 'service-worker.js'),
         // Need to exclude the theme as it is updated independently
         exclude: [/theme/],
         // Cache large files for the manifests to avoid warning messages
@@ -155,25 +155,25 @@ module.exports = (env, argv) => {
         overlay: { errors: true, warnings: false },
       },
       proxy: {
-        "/dicomweb": "http://localhost:5000",
+        '/dicomweb': 'http://localhost:5000',
       },
       static: [
         {
-          directory: "../../testdata",
+          directory: '../../testdata',
           staticOptions: {
-            extensions: ["gz", "br", "mht"],
-            index: ["index.json.gz", "index.mht.gz"],
+            extensions: ['gz', 'br', 'mht'],
+            index: ['index.json.gz', 'index.mht.gz'],
             redirect: true,
             setHeaders,
           },
-          publicPath: "/viewer-testdata",
+          publicPath: '/viewer-testdata',
         },
       ],
       //public: 'http://localhost:' + 3000,
       //writeToDisk: true,
       historyApiFallback: {
         disableDotRule: true,
-        index: PUBLIC_URL + "index.html",
+        index: PUBLIC_URL + 'index.html',
       },
       devMiddleware: {
         writeToDisk: true,
@@ -197,9 +197,9 @@ module.exports = (env, argv) => {
   if (isProdBuild) {
     mergedConfig.plugins.push(
       new MiniCssExtractPlugin({
-        filename: "[name].bundle.css",
-        chunkFilename: "[id].css",
-      }),
+        filename: '[name].bundle.css',
+        chunkFilename: '[id].css',
+      })
     );
   }
 

@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAF</title>
+</head>
+
+<body>
+    <div>
+        <h1>RAF</h1>
+        <div id="div" style="width:100px; height:100px; background-color:#000; position:absolute; left:0; top:0;"></div>
+    </div>
+
+    <script type="text/javascript">
+        let divEle = document.getElementById("div");
+        let startTime; // 开始时间
+        const distance = 1000; // 移动的距离
+        const timeCount = 3000; // 移动的时间
+
+        function handler(time) {
+            if (startTime === undefined) {
+                startTime = time + 2000; // 记录动画开始的时间为当前时间 + 2s
+            }
+
+            const elapsedTime = time - startTime; // 计算从动画开始到当前的时间差
+            if (elapsedTime < 0) {
+                window.requestAnimationFrame(handler);
+            } else if (elapsedTime < timeCount) {
+                // 根据时间差计算当前的位置
+                divEle.style.left = (elapsedTime / timeCount) * distance + 'px';
+                window.requestAnimationFrame(handler); // 继续动画
+            } else {
+                // 动画完成，将元素移动到最终位置
+                divEle.style.left = distance + 'px';
+            }
+        }
+
+        window.requestAnimationFrame(handler);
+    </script>
+</body>
+
+</html>
